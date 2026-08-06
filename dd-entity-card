@@ -69,6 +69,15 @@ class DDEntityCard extends HTMLElement {
           color:var(--state-icon-color);
         }
         
+.switch-button.active{
+    background: var(--primary-color);
+    color: white;
+}
+
+.switch-button ha-icon{
+    --mdc-icon-size:20px;
+}
+
         .value-container{
   display:flex;
   align-items:center;
@@ -77,9 +86,9 @@ class DDEntityCard extends HTMLElement {
 
 .controls{
     display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    gap:6px;
+    flex-direction:row;
+    align-items:center;
+    gap:10px;
 }
 
 .control-button{
@@ -97,14 +106,32 @@ class DDEntityCard extends HTMLElement {
     cursor:pointer;
 }
 
-.number-box{
-    display:flex;
-    align-items:center;
-    gap:4px;
+.number-value{
+    min-width:70px;
+    text-align:center;
+    font-size:28px;
+    font-weight:400;
+    white-space:nowrap;
 }
+
 
 .control-button ha-icon{
     --mdc-icon-size:18px;
+}
+
+ha-switch{
+    margin-left:6px;
+}
+
+.number-box{
+    display:flex;
+    align-items:center;
+
+    border-radius:20px;
+    padding:2px 6px;
+
+    background:
+        var(--secondary-background-color);
 }
 
 .control-button:hover{
@@ -182,14 +209,57 @@ createControls() {
     });
     this.elements.numberBox = document.createElement("div");
     this.elements.numberBox.className = "number-box";
-
+this.elements.numberValue = document.createElement("span");
+this.elements.numberValue.className = "number-value";
 this.elements.numberBox.appendChild(this.elements.minusButton);
+this.elements.numberBox.appendChild(this.elements.numberValue);
 this.elements.numberBox.appendChild(this.elements.plusButton);
+    this.elements.controls.appendChild(this.elements.numberBox);
+this.elements.switch = document.createElement("button");
+this.elements.switch.className = "control-button switch-button";
 
-this.elements.controls.appendChild(this.elements.numberBox);
-    this.elements.switch = document.createElement("ha-switch");
-    this.elements.switch.style.display = "none";
-    this.elements.controls.prepend(this.elements.switch);
+this.elements.switch.innerHTML =
+    '<ha-icon icon="mdi:power"></ha-icon>';
+
+this.elements.switch.style.display = "none";
+
+this.elements.controls.append(this.elements.switch);
+    
+    this.elements.switch.addEventListener(
+    "click",
+    async (e) => {
+
+        e.stopPropagation();
+
+        const control = this.getControl("switch");
+
+        const entity =
+            control?.entity
+                ? this._hass.states[control.entity]
+                : this.getEntity();
+
+        if (!entity) {
+            return;
+        }
+
+        const domain =
+            entity.entity_id.split(".")[0];
+
+        const isOn =
+            entity.state === "on";
+
+        await this._hass.callService(
+            domain,
+            isOn
+                ? "turn_off"
+                : "turn_on",
+            {
+                entity_id: entity.entity_id
+            }
+        );
+
+    }
+);
 
 }
 
@@ -274,12 +344,57 @@ if (controls.length === 0) {
 }
 
     this.elements.controls.style.display = "";
+    const numberControl = this.getControl("number");
+
+if (numberControl) {
+
+    this.elements.numberBox.style.display = "";
+
+    this.elements.numberValue.textContent =
+        this.formatValue(
+            this.getValue(entity),
+            entity,
+            this.getOptions(this.config.value)
+        );
+
+} else {
+
+    this.elements.numberBox.style.display = "none";
+
+}
+    
+    const switchControl = this.getControl("switch");
+
+if (switchControl) {
+
+    this.elements.switch.style.display = "";
+
+    const switchEntity =
+        switchControl.entity
+            ? this._hass.states[switchControl.entity]
+            : entity;
+
+    const isOn = switchEntity?.state === "on";
+
+this.elements.switch.classList.toggle(
+    "active",
+    isOn
+);
+
+} else {
+
+    this.elements.switch.style.display = "none";
+
+}
 
 this.elements.minusButton.disabled =
     this.isDecreaseDisabled(entity);
 
 this.elements.plusButton.disabled =
     this.isIncreaseDisabled(entity);
+
+this.elements.value.style.display =
+    numberControl ? "none" : "";
 
 }
 
@@ -293,8 +408,10 @@ async changeValue(direction) {
 
   if (entity.entity_id.startsWith("input_number.")) {
 
+const control = this.getControl("number");
+
 const step = Number(
-  this.config.controls.step ??
+  control?.step ??
   entity.attributes.step ??
   1
 );
@@ -323,12 +440,13 @@ value = Number(value.toFixed(decimals));
 
   } else if (entity.entity_id.startsWith("climate.")) {
 
-  const step =
-    Number(
-      this.config.controls.step ??
-      entity.attributes.target_temp_step ??
-      0.5
-    );
+  const control = this.getControl("number");
+
+const step = Number(
+    control?.step ??
+    entity.attributes.target_temp_step ??
+    0.5
+);
 
   let value =
     Number(entity.attributes.temperature) +
@@ -651,6 +769,14 @@ getControls() {
 
   // starý zápis
   return [this.config.controls];
+
+}
+
+getControl(type) {
+
+  return this.getControls().find(
+    control => control.type === type
+  );
 
 }
 
