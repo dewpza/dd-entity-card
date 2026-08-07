@@ -3,7 +3,7 @@
 A modern, highly configurable Home Assistant Lovelace card focused on compact entity control.
 
 <p align="center">
-  <img src="screenshots/obrazok1.png" alt="DD Entity Card" width="900">
+  <img src="screenshots/obrazok1.png" alt="DD Entity Card" width="500">
 </p>
 
 ## Features
