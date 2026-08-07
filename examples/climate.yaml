@@ -1,0 +1,32 @@
+type: custom:dd-entity-card
+
+entity: climate.klima
+
+icon: mdi:air-conditioner
+
+name:
+  value: Obývačka
+
+secondary:
+  rows:
+    - row:
+        - state: true
+        - text: " • "
+        - attribute: hvac_action
+
+    - row:
+        - text: "Aktuálna: "
+        - attribute: current_temperature
+        - text: " °C"
+
+value:
+  decimals: 1
+  unit: true
+
+controls:
+  - type: number
+    step: 0.5
+
+  - type: switch
+
+  - type: select
