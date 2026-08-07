@@ -1,0 +1,20 @@
+type: custom:dd-entity-card
+
+entity: sensor.teplota_bojler
+
+icon: mdi:water-boiler
+
+name:
+  value: Bojler
+
+secondary:
+  rows:
+    - row:
+        - text: "Teplota: "
+        - entity: sensor.teplota_bojler
+          state: true
+          unit: true
+
+controls:
+  - type: switch
+    entity: switch.zapninanie_bojlera
