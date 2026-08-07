@@ -1,0 +1,16 @@
+type: custom:dd-entity-card
+
+entity: input_number.nastavena_teplota
+
+icon: mdi:thermometer
+
+name:
+  value: Nastavená teplota
+
+value:
+  decimals: 1
+  unit: "°C"
+
+controls:
+  - type: number
+    step: 0.5
