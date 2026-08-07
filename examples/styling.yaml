@@ -1,0 +1,41 @@
+type: custom:dd-entity-card
+
+entity: sensor.teplota_bojler
+
+icon: mdi:palette
+
+name:
+  value: Styling demo
+  color: dodgerblue
+  weight: 700
+
+secondary:
+  rows:
+    - row:
+        - text: "Normálny text "
+
+        - text: "zelený"
+          color: green
+
+        - text: " červený"
+          color: red
+
+    - row:
+        - text: "Hodnota: "
+
+        - state: true
+          unit: true
+          color: orange
+          weight: 700
+
+    - row:
+        - text: "Veľký text "
+          size: 18px
+
+        - text: "malý text"
+          size: 12px
+
+value:
+  decimals: 1
+  color: deepskyblue
+  weight: 700
