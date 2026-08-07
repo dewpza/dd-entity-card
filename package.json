@@ -1,0 +1,11 @@
+{
+  "name": "dd-entity-card",
+  "version": "0.1.0-dev",
+  "description": "A modern and highly configurable Home Assistant Lovelace card.",
+  "author": "Dušan Ďurica",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dewpza/dd-entity-card.git"
+  }
+}
