@@ -1,0 +1,30 @@
+type: custom:dd-entity-card
+
+entity: sensor.teplota_bojler
+
+icon: mdi:water-boiler
+
+name:
+  value: Bojler
+
+secondary:
+  rows:
+
+    - row:
+        - text: "Teplota: "
+        - state: true
+          unit: true
+          color: green
+
+    - row:
+        - text: "Spotreba: "
+        - entity: sensor.sonoff_xxxxxxx_power
+          state: true
+          unit: true
+          color: orange
+
+    - row:
+        - text: "Napätie: "
+        - entity: sensor.sonoff_xxxxxxx_voltage
+          state: true
+          unit: true
