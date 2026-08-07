@@ -1,0 +1,35 @@
+type: custom:dd-entity-card
+
+entity: sensor.teplota_bojler
+
+icon: mdi:water-boiler
+
+name:
+  value: Bojler
+
+secondary:
+  rows:
+    - row:
+        - text: "Nastavená: "
+        - entity: input_number.nastavena_teplota_bojlera
+          state: true
+          unit: "°C"
+
+    - row:
+        - text: "Spotreba: "
+        - entity: sensor.sonoff_meranie_spotreby_power
+          state: true
+          unit: true
+
+value:
+  entity: input_number.nastavena_teplota_bojlera
+  decimals: 1
+  unit: "°C"
+
+controls:
+  - type: number
+    entity: input_number.nastavena_teplota_bojlera
+    step: 0.5
+
+  - type: switch
+    entity: switch.sonoff_zapinanie_bojlera
