@@ -1,0 +1,54 @@
+type: custom:dd-entity-card
+
+entity: climate.klima
+
+icon: mdi:air-conditioner
+
+name:
+  value: Obývačka
+  color: dodgerblue
+  weight: 700
+
+secondary:
+  rows:
+
+    - row:
+        - state: true
+        - text: " • "
+        - attribute: hvac_action
+
+    - row:
+        - text: "Aktuálna: "
+        - attribute: current_temperature
+          decimals: 1
+        - text: " °C"
+
+    - row:
+        - text: "Vlhkosť: "
+        - entity: sensor.obyvacka_humidity
+          state: true
+          unit: true
+          color: deepskyblue
+
+value:
+  decimals: 1
+  unit: true
+  color: orange
+  weight: 700
+
+controls:
+  - type: number
+    step: 0.5
+
+  - type: switch
+
+  - type: select
+
+tap_action:
+  action: more-info
+
+hold_action:
+  action: none
+
+double_tap_action:
+  action: none
