@@ -1,0 +1,2 @@
+type: custom:dd-entity-card
+entity: sensor.outdoor_temperature
