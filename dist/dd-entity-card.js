@@ -413,7 +413,7 @@ renderSecondaryRows(entity, rows) {
         for (const item of rowConfig.row) {
             const span = document.createElement("span");
             if (item.text !== undefined) {
-                span.textContent = item.text;
+                this.renderElement(span, item.text, entity, item);
             } else {
                 const sourceEntity =
                     item.entity
