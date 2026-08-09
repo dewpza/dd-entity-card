@@ -995,20 +995,26 @@ formatValue(value, entity, options = {}) {
   }
 
   // Jednotka
-  if (options.unit) {
+ if (options.unit) {
 
-    let unit = "";
+  let unit = "";
 
-    if (options.unit === true) {
-      unit = entity.attributes.unit_of_measurement ?? "";
+  if (options.unit === true) {
+
+    if (entity.entity_id?.startsWith("climate.")) {
+      unit = entity.attributes.temperature_unit ?? "";
     } else {
-      unit = options.unit;
+      unit = entity.attributes.unit_of_measurement ?? "";
     }
 
-    if (unit) {
-      result += " " + unit;
-    }
+  } else {
+    unit = options.unit;
   }
+
+  if (unit) {
+    result += " " + unit;
+  }
+ }
 
   return String(result);
 }
