@@ -12,7 +12,7 @@
  * https://github.com/dewpza/dd-entity-card
  *
  * Author:
- * Ing. Dušan Ďurica
+ * Ing. DuĹˇan ÄŽurica
  *
  * License:
  * MIT
@@ -586,7 +586,7 @@ async changeValue(direction) {
 
     let value = Number(entity.state) + direction * step;
 
-    // zaokrúhlenie podľa kroku
+    // zaokrĂşhlenie podÄľa kroku
     const decimals = (step.toString().split(".")[1] || "").length;
 
     value = Number(value.toFixed(decimals));
@@ -796,7 +796,7 @@ getSecondary(entity) {
 
 getValue(entity) {
 
-  // Ak je používateľská konfigurácia, použijeme ju
+  // Ak je pouĹľĂ­vateÄľskĂˇ konfigurĂˇcia, pouĹľijeme ju
   const configured = this.getSectionValue(
     "value",
     entity,
@@ -861,7 +861,7 @@ resolveValue(value, entity) {
     return undefined;
   }
 
-  // jednoduchý text alebo číslo
+  // jednoduchĂ˝ text alebo ÄŤĂ­slo
   if (typeof value === "string" || typeof value === "number") {
     return value;
   }
@@ -880,7 +880,7 @@ resolveObject(config, entity) {
 
   let sourceEntity = entity;
 
-  // iná entita
+  // inĂˇ entita
   if ("entity" in config) {
     sourceEntity = this._hass.states[config.entity];
 
@@ -889,7 +889,7 @@ resolveObject(config, entity) {
     }
   }
 
-  // atribút
+  // atribĂşt
   if ("attribute" in config) {
     return sourceEntity.attributes[config.attribute];
   }
@@ -899,7 +899,7 @@ resolveObject(config, entity) {
     return sourceEntity.state;
   }
 
-  // ak je zadaná len entita
+  // ak je zadanĂˇ len entita
   if ("entity" in config) {
     return sourceEntity.state;
   }
@@ -926,12 +926,12 @@ getControls() {
     return [];
   }
 
-  // nový zápis
+  // novĂ˝ zĂˇpis
   if (Array.isArray(this.config.controls)) {
     return this.config.controls;
   }
 
-  // starý zápis
+  // starĂ˝ zĂˇpis
   return [this.config.controls];
 
 }
@@ -952,13 +952,13 @@ getSectionValue(section, entity, fallback) {
     return fallback;
   }
 
-  // Jednoduchá hodnota
+  // JednoduchĂˇ hodnota
   if (typeof config !== "object") {
     const value = this.resolveValue(config, entity);
     return value !== undefined ? value : fallback;
   }
 
-  // Nový zápis:
+  // NovĂ˝ zĂˇpis:
   // entity:, attribute:, state:
   if (
     "entity" in config ||
@@ -969,7 +969,7 @@ getSectionValue(section, entity, fallback) {
     return value !== undefined ? value : fallback;
   }
 
-  // Starý zápis:
+  // StarĂ˝ zĂˇpis:
   // value:
   if ("value" in config) {
     const value = this.resolveValue(config.value, entity);
@@ -987,7 +987,7 @@ formatValue(value, entity, options = {}) {
 
   let result = value;
 
-  // Zaokrúhlenie
+  // ZaokrĂşhlenie
   const number = Number(result);
 
   if (!isNaN(number) && options.decimals !== undefined) {
