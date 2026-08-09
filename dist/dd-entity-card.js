@@ -179,6 +179,46 @@ class DDEntityCard extends HTMLElement {
           background:var(--primary-color);
           color:white;
         }
+        @media (max-width: 600px){
+
+    .container{
+        gap:10px;
+        padding:12px;
+    }
+
+    .icon{
+        width:40px;
+        flex-shrink:0;
+    }
+
+    .info{
+        min-width:0;
+    }
+
+    .value-container{
+        gap:5px;
+        flex-shrink:0;
+    }
+
+    .number-value{
+        min-width:54px;
+        font-size:22px;
+    }
+
+    .control-button{
+        width:28px;
+        height:28px;
+    }
+
+    .select-button{
+        width:30px;
+        height:30px;
+    }
+
+    .select-controls{
+        gap:4px;
+    }
+}
       </style>
       <div class="container">
         <div class="icon">
