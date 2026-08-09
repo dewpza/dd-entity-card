@@ -120,13 +120,13 @@ class DDEntityCard extends HTMLElement {
           background:var(--secondary-background-color);
           cursor:pointer;
         }
-        .number-value{
-          min-width:70px;
-          text-align:center;
-          font-size:28px;
-          font-weight:400;
-          white-space:nowrap;
-        }
+.number-value{
+  min-width:60px;
+  text-align:center;
+  font-size:24px;
+  font-weight:400;
+  white-space:nowrap;
+}
         .control-button ha-icon{
           --mdc-icon-size:18px;
         }
@@ -179,13 +179,13 @@ class DDEntityCard extends HTMLElement {
           background:var(--primary-color);
           color:white;
         }
-        @media (max-width: 600px){
+        
+@media (max-width: 600px){
 
     .container{
         gap:10px;
         padding:12px;
     }
-
     .icon{
         width:40px;
         flex-shrink:0;
@@ -198,6 +198,11 @@ class DDEntityCard extends HTMLElement {
     .value-container{
         gap:5px;
         flex-shrink:0;
+    }
+
+    .value{
+        font-size:22px;
+        min-width:54px;
     }
 
     .number-value{
