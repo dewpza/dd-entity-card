@@ -1,12 +1,10 @@
 # Actions
 
-DD Entity Card supports the standard Home Assistant actions.
+DD Entity Card supports Home Assistant card actions.
 
 - `tap_action`
 - `hold_action`
 - `double_tap_action`
-
-If no action is specified, the default Home Assistant behavior is used.
 
 ---
 
@@ -17,14 +15,36 @@ tap_action:
   action: more-info
 ```
 
-Supported actions include:
+By default, `more-info` opens the main entity configured in `entity`.
 
-- `more-info`
-- `toggle`
-- `navigate`
-- `url`
-- `perform-action`
-- `none`
+You can also specify a different entity to open:
+
+```yaml
+tap_action:
+  action: more-info
+  entity: sensor.temperature
+```
+
+This is useful when the main entity is used for control, but you want the tap action to display information or history for another entity.
+
+For example, a boiler card can use an `input_number` for the target temperature while opening the actual temperature sensor:
+
+```yaml
+type: custom:dd-entity-card
+
+entity: input_number.nastavena_teplota_bojlera
+
+name:
+  value: Bojler doma
+
+tap_action:
+  action: more-info
+  entity: sensor.teplota_bojler
+```
+
+Clicking the card will open the `sensor.teplota_bojler` more-info dialog instead of the `input_number`.
+
+If `entity` is omitted, the main card entity is used.
 
 ---
 
@@ -66,42 +86,10 @@ tap_action:
 
 ---
 
-# Service / Perform Action
+# Disable Action
 
 ```yaml
 tap_action:
-  action: perform-action
-  perform_action: climate.turn_off
-  target:
-    entity_id: climate.living_room
-```
-
----
-
-# Disable action
-
-```yaml
-tap_action:
-  action: none
-```
-
----
-
-# Complete example
-
-```yaml
-type: custom:dd-entity-card
-
-entity: climate.living_room
-
-tap_action:
-  action: more-info
-
-hold_action:
-  action: navigate
-  navigation_path: /lovelace/climate
-
-double_tap_action:
   action: none
 ```
 
@@ -109,6 +97,7 @@ double_tap_action:
 
 # Notes
 
-- Controls (Number, Switch, Select) handle their own click events.
-- Tapping a control does not trigger the card `tap_action`.
-- Clicking elsewhere on the card executes the configured card action.
+- Controls have their own click handling.
+- Clicking a control does not trigger the card `tap_action`.
+- If `tap_action.entity` is specified, it overrides the main card entity for the action.
+- If no entity is specified, the card's main `entity` is used.
