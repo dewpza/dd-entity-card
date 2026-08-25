@@ -731,7 +731,9 @@ showMoreInfo() {
   );
 
   event.detail = {
-    entityId: this.config.entity
+    entityId:
+      this.config.tap_action?.entity ??
+      this.config.entity
   };
 
   this.dispatchEvent(event);
