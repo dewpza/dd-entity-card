@@ -49,7 +49,7 @@ All notable changes to this project will be documented in this file.
 - Standard Home Assistant actions.
 - Initial documentation and examples.
 
-[Unreleased]: https://github.com/dewpza/dd-entity-card/compare/v0.1.3...HEAD
+[0.1.4]: https://github.com/dewpza/dd-entity-card/releases/tag/v0.1.4
 [0.1.3]: https://github.com/dewpza/dd-entity-card/releases/tag/v0.1.3
 [0.1.2]: https://github.com/dewpza/dd-entity-card/releases/tag/v0.1.2
 [0.1.1]: https://github.com/dewpza/dd-entity-card/releases/tag/v0.1.1
