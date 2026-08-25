@@ -1,149 +1,278 @@
 # Styling
 
-The DD Entity Card allows individual styling of most displayed elements.
+DD Entity Card supports styling individual elements of the card.
 
-Supported properties include:
+Styling options can be used for:
 
-- color
-- size
-- weight
-- unit
-- decimals
+- Card name
+- Card value
+- Secondary text
+- Secondary row items
 
 ---
 
-# Name
+## Color
+
+Use `color` to change the text color.
 
 ```yaml
 name:
-  value: Living room
+  value: Bojler doma
+  color: green
 ```
 
-Custom styling:
+Colors can also be applied to secondary items:
+
+```yaml
+secondary:
+  rows:
+    - row:
+        - text: "Teplota: "
+          color: green
+        - entity: sensor.teplota_bojler
+          state: true
+          color: green
+```
+
+CSS color values are supported, for example:
+
+```yaml
+color: red
+```
+
+```yaml
+color: "#00ff00"
+```
+
+The following Home Assistant color names are also supported:
+
+```yaml
+color: primary
+color: secondary
+color: warning
+color: error
+color: success
+```
+
+---
+
+## Font size
+
+Use `size` to change the font size.
 
 ```yaml
 name:
-  value: Living room
-  color: dodgerblue
+  value: Bojler doma
+  size: 18px
+```
+
+Example for secondary information:
+
+```yaml
+secondary:
+  rows:
+    - row:
+        - entity: sensor.teplota_bojler
+          state: true
+          size: 14px
+```
+
+---
+
+## Font weight
+
+Use `weight` to change the font weight.
+
+```yaml
+name:
+  value: Bojler doma
+  weight: 700
+```
+
+For secondary items:
+
+```yaml
+secondary:
+  rows:
+    - row:
+        - text: "Teplota: "
+          weight: 700
+```
+
+Numeric CSS font weights can be used:
+
+```yaml
+weight: 400
+weight: 500
+weight: 700
+```
+
+---
+
+## Decimal places
+
+Use `decimals` to control the number of decimal places.
+
+```yaml
+value:
+  decimals: 1
+```
+
+For secondary values:
+
+```yaml
+secondary:
+  rows:
+    - row:
+        - entity: sensor.teplota_bojler
+          state: true
+          decimals: 1
+```
+
+Examples:
+
+```text
+22.5
+22.50
+23
+```
+
+depending on the configured value.
+
+---
+
+## Units
+
+Use `unit: true` to display the entity unit.
+
+```yaml
+secondary:
+  rows:
+    - row:
+        - entity: sensor.temperature
+          state: true
+          unit: true
+```
+
+The unit is taken from the entity.
+
+For climate entities, temperature values use the climate entity's configured temperature unit:
+
+```yaml
+secondary:
+  rows:
+    - row:
+        - attribute: current_temperature
+          decimals: 1
+          unit: true
+```
+
+Result:
+
+```text
+22.5 °C
+```
+
+---
+
+## Styling the card name
+
+```yaml
+name:
+  value: Obývačka
+  color: primary
   size: 18px
   weight: 700
 ```
 
 ---
 
-# Value
+## Styling the main value
 
 ```yaml
 value:
   decimals: 1
   unit: true
-```
-
-Custom styling:
-
-```yaml
-value:
   color: orange
-  size: 20px
+  size: 24px
   weight: 700
 ```
 
 ---
 
-# Secondary
+## Styling secondary rows
 
-Every item inside `secondary.rows` can be styled independently.
+Each item can be styled independently.
 
 ```yaml
 secondary:
   rows:
     - row:
-        - text: "Temperature: "
+        - text: "Aktuálna: "
+          color: secondary
+          weight: 500
 
-        - entity: sensor.temperature
+        - entity: sensor.teplota_bojler
           state: true
           color: green
+          size: 14px
           weight: 700
+          decimals: 1
           unit: true
 ```
 
 ---
 
-# Supported styling options
-
-| Property | Description | Example |
-|----------|-------------|---------|
-| color | Text color | `green` |
-| size | Font size | `18px` |
-| weight | Font weight | `700` |
-| unit | Display unit | `true` |
-| decimals | Decimal places | `1` |
-
----
-
-# Examples
-
-Green value
+## Combined example
 
 ```yaml
-color: green
-```
+type: custom:dd-entity-card
 
-Large value
+entity: climate.living_room
 
-```yaml
-size: 20px
-```
+name:
+  value: Obývačka
+  color: primary
+  size: 18px
+  weight: 700
 
-Bold text
-
-```yaml
-weight: 700
-```
-
-Display unit
-
-```yaml
-unit: true
-```
-
-Round number
-
-```yaml
-decimals: 2
-```
-
----
-
-# Combined example
-
-```yaml
 secondary:
   rows:
     - row:
-        - text: "Power: "
+        - text: "Aktuálna: "
+          color: secondary
 
-        - entity: sensor.power
-          state: true
-          color: orange
-          weight: 700
-          size: 18px
-          decimals: 0
+        - attribute: current_temperature
+          decimals: 1
           unit: true
-```
+          color: green
+          weight: 700
 
-Result:
-
-```
-Power: 512 W
+value:
+  decimals: 1
+  unit: true
+  color: orange
+  weight: 700
 ```
 
 ---
 
-# Notes
+## Supported styling options
 
-- All styling options are optional.
-- Styling is applied independently to each element.
-- Colors accept any valid CSS color.
-- Font size accepts any valid CSS size.
-- Font weight accepts numeric or keyword values.
+| Property | Description | Example |
+|---|---|---|
+| `color` | Text color | `green` |
+| `size` | Font size | `14px` |
+| `weight` | Font weight | `700` |
+| `decimals` | Number of decimal places | `1` |
+| `unit` | Display entity unit | `true` |
+
+---
+
+## Notes
+
+- Styling can be applied independently to individual elements.
+- `decimals` affects numeric values.
+- `unit: true` uses the unit provided by the entity.
+- Climate temperature values use the climate entity's configured temperature unit.
+- Secondary row text can be styled in the same way as entity values.
