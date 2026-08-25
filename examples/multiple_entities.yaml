@@ -14,12 +14,14 @@ secondary:
         - entity: input_number.nastavena_teplota_bojlera
           state: true
           unit: "°C"
+          decimals: 1
 
     - row:
         - text: "Spotreba: "
         - entity: sensor.sonoff_meranie_spotreby_power
           state: true
           unit: true
+          decimals: 0
 
 value:
   entity: input_number.nastavena_teplota_bojlera
