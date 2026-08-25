@@ -1,12 +1,14 @@
 # Examples
 
-This page contains complete configuration examples for common use cases.
+DD Entity Card can be used for simple sensors as well as more complex controls.
+
+The `examples/` directory contains ready-to-use YAML configurations.
 
 ---
 
-# Basic Card
+## Basic
 
-The simplest possible configuration.
+Simple entity card:
 
 ```yaml
 type: custom:dd-entity-card
@@ -16,160 +18,297 @@ entity: sensor.temperature
 
 See:
 
-```
-examples/basic.yaml
-```
+[`examples/basic.yaml`](../examples/basic.yaml)
 
 ---
 
-# Number Control
+## Number control
 
-Entity with plus and minus controls.
+Number control with configurable step:
 
-Features:
-
-- Number control
-- Step configuration
-- Value formatting
+```yaml
+controls:
+  - type: number
+    step: 0.5
+```
 
 See:
 
-```
-examples/number.yaml
-```
+[`examples/number.yaml`](../examples/number.yaml)
 
 ---
 
-# Secondary Rows
+## Switch
 
-Display multiple values below the title.
+A switch can control the main entity or a different entity:
 
-Features:
-
-- Multiple rows
-- Static text
-- Entity states
-- Entity attributes
-- Units
-- Colors
+```yaml
+controls:
+  - type: switch
+    entity: switch.boiler
+```
 
 See:
 
-```
-examples/secondary_rows.yaml
-```
+[`examples/switch.yaml`](../examples/switch.yaml)
 
 ---
 
-# Switch Control
+## Climate
 
-Power button controlling another entity.
+Climate entities support:
 
-Features:
-
-- Separate switch entity
-- Sensor + switch combination
-
-See:
-
-```
-examples/switch.yaml
-```
-
----
-
-# Climate Card
-
-Complete climate control.
-
-Features:
-
-- Temperature adjustment
-- Power button
+- target temperature
 - HVAC mode selection
-- Current temperature
-- HVAC action
+- power control
+- current temperature
+- temperature units
+- decimal formatting
+
+Example:
+
+```yaml
+type: custom:dd-entity-card
+
+entity: climate.living_room
+
+name:
+  value: Obývačka
+
+secondary:
+  rows:
+    - row:
+        - text: "Aktuálna: "
+        - attribute: current_temperature
+          decimals: 1
+          unit: true
+
+value:
+  decimals: 1
+  unit: true
+
+controls:
+  - type: number
+    step: 0.5
+
+  - type: switch
+
+  - type: select
+```
 
 See:
 
-```
-examples/climate.yaml
-```
+[`examples/climate.yaml`](../examples/climate.yaml)
 
 ---
 
-# Boiler Card
+## Secondary rows
 
-Real-world boiler controller.
+Multiple rows can be used to display additional information.
 
-Features:
+```yaml
+secondary:
+  rows:
 
-- Input Number
-- Switch
-- Multiple sensors
-- Power monitoring
+    - row:
+        - text: "Teplota: "
+        - entity: sensor.temperature
+          state: true
+          decimals: 1
+          unit: true
+
+    - row:
+        - text: "Výkon: "
+        - entity: sensor.power
+          state: true
+          unit: true
+```
 
 See:
 
-```
-examples/boiler.yaml
-```
+[`examples/secondary_rows.yaml`](../examples/secondary_rows.yaml)
 
 ---
 
-# Multiple Entities
+## Multiple entities
 
-One card controlling several entities.
+Different entities can be displayed and controlled by the same card.
 
-Features:
+```yaml
+entity: input_number.target_temperature
 
-- Main entity
-- Number entity
-- Switch entity
-- Secondary entities
+secondary:
+  rows:
+    - row:
+        - entity: sensor.current_temperature
+          state: true
+          unit: true
+
+controls:
+  - type: number
+    step: 0.5
+
+  - type: switch
+    entity: switch.heater
+```
 
 See:
 
-```
-examples/multiple_entities.yaml
-```
+[`examples/multiple_entities.yaml`](../examples/multiple_entities.yaml)
 
 ---
 
-# Styling
+## Boiler
 
-Demonstrates formatting options.
+A typical boiler configuration can use an `input_number` for the target temperature, a sensor for the actual temperature and a switch for power control.
 
-Features:
+```yaml
+type: custom:dd-entity-card
 
-- Colors
-- Font size
-- Font weight
-- Units
-- Decimals
+entity: input_number.nastavena_teplota_bojlera
+
+name:
+  value: Bojler doma
+
+secondary:
+  rows:
+    - row:
+        - text: "Teplota: "
+          color: secondary
+
+        - entity: sensor.teplota_bojler
+          state: true
+          decimals: 1
+          unit: true
+          color: green
+
+controls:
+  - type: number
+    step: 0.5
+
+  - type: switch
+    entity: switch.boiler
+
+tap_action:
+  action: more-info
+  entity: sensor.teplota_bojler
+```
+
+Clicking the card opens the actual temperature sensor instead of the target temperature input.
 
 See:
 
-```
-examples/styling.yaml
-```
+[`examples/boiler.yaml`](../examples/boiler.yaml)
 
 ---
 
-# Advanced
+## Styling
 
-Complete configuration reference.
+Individual elements can be styled.
 
-Features:
+```yaml
+name:
+  value: Obývačka
+  color: primary
+  size: 18px
+  weight: 700
 
-- Name
-- Secondary
-- Value
-- Controls
-- Actions
+secondary:
+  rows:
+    - row:
+        - text: "Teplota: "
+          color: green
+
+        - entity: sensor.temperature
+          state: true
+          color: green
+          decimals: 1
+          unit: true
+```
 
 See:
 
+[`examples/styling.yaml`](../examples/styling.yaml)
+
+---
+
+## Advanced
+
+A more complete configuration combining several features:
+
+```yaml
+type: custom:dd-entity-card
+
+entity: climate.living_room
+
+icon:
+  value: mdi:air-conditioner
+  color: primary
+
+name:
+  value: Obývačka
+  weight: 700
+
+secondary:
+  rows:
+    - row:
+        - text: "Aktuálna: "
+          color: secondary
+
+        - attribute: current_temperature
+          decimals: 1
+          unit: true
+          color: green
+
+    - row:
+        - text: "Výkon: "
+        - entity: sensor.ac_power
+          state: true
+          decimals: 0
+          unit: true
+
+value:
+  decimals: 1
+  unit: true
+
+controls:
+  - type: number
+    step: 0.5
+
+  - type: switch
+
+  - type: select
+
+tap_action:
+  action: more-info
 ```
-examples/advanced.yaml
-```
+
+See:
+
+[`examples/advanced.yaml`](../examples/advanced.yaml)
+
+---
+
+# Example files
+
+| Example | Description |
+|---|---|
+| [`basic.yaml`](../examples/basic.yaml) | Basic entity card |
+| [`number.yaml`](../examples/number.yaml) | Number control |
+| [`secondary_rows.yaml`](../examples/secondary_rows.yaml) | Secondary rows |
+| [`switch.yaml`](../examples/switch.yaml) | Switch control |
+| [`climate.yaml`](../examples/climate.yaml) | Climate card |
+| [`boiler.yaml`](../examples/boiler.yaml) | Boiler example |
+| [`multiple_entities.yaml`](../examples/multiple_entities.yaml) | Multiple entities |
+| [`styling.yaml`](../examples/styling.yaml) | Styling |
+| [`advanced.yaml`](../examples/advanced.yaml) | Advanced configuration |
+
+---
+
+# Related documentation
+
+- [Configuration](configuration.md)
+- [Controls](controls.md)
+- [Secondary](secondary.md)
+- [Styling](styling.md)
+- [Actions](actions.md)
