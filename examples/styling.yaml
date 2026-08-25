@@ -37,5 +37,7 @@ secondary:
 
 value:
   decimals: 1
-  color: deepskyblue
+  unit: "°C"
+  size: 24px
   weight: 700
+  color: "#F44336"
