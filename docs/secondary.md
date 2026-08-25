@@ -248,7 +248,7 @@ secondary:
 
     - row:
         - text: "Spotreba sieť: "
-        - entity: sensor.sonoff_100142bd44_power
+        - entity: sensor.sonoff_XXX_power
           state: true
           decimals: 0
           unit: true
@@ -262,7 +262,7 @@ controls:
     step: 0.5
 
   - type: switch
-    entity: switch.sonoff_100142bd44
+    entity: switch.sonoff_XXX
 
 tap_action:
   action: more-info
