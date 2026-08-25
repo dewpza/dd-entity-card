@@ -46,6 +46,7 @@ controls:
 
 tap_action:
   action: more-info
+  entity: climate.klima
 
 hold_action:
   action: none
