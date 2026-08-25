@@ -1,62 +1,62 @@
 # Controls
 
-Controls add interactive elements to the right side of the card.
+Controls provide interactive elements for changing or controlling an entity.
 
 Supported controls:
 
-- Number
-- Switch
-- Select (Climate)
+- `number`
+- `switch`
+- `select`
 
-Controls are rendered in the order they are defined.
+Controls are defined using the `controls` section.
 
 ---
 
-# Number
+## Number
 
-Displays minus and plus buttons for `number`, `input_number` and `climate` entities.
+The `number` control displays minus and plus buttons.
 
 ```yaml
 controls:
   - type: number
 ```
 
-## Options
+The control can be used with `input_number` entities and climate entities.
 
-| Option | Default | Description |
-|---------|---------|-------------|
-| `step` | Entity step | Increment/decrement value |
-| `entity` | Main entity | Entity to control |
+### Step
 
-Example
+Use `step` to define the increment.
 
 ```yaml
 controls:
   - type: number
-    entity: input_number.temperature
     step: 0.5
 ```
 
+For example:
+
+```text
+−   22.5   +
+```
+
+For climate entities, the control changes the target temperature.
+
+For `input_number` entities, the control changes the input number value.
+
 ---
 
-# Switch
+## Switch
 
-Displays a power button.
-
-Supports any `switch` entity.
+The `switch` control displays a power button.
 
 ```yaml
 controls:
   - type: switch
 ```
 
-## Options
+The main card entity is used by default.
 
-| Option | Default | Description |
-|---------|---------|-------------|
-| `entity` | Main entity | Switch entity to toggle |
-
-Example
+A different entity can be specified:
 
 ```yaml
 controls:
@@ -64,47 +64,95 @@ controls:
     entity: switch.boiler
 ```
 
+This is useful when the main entity is used for displaying information or setting a value, while a separate switch controls the power.
+
+Example:
+
+```yaml
+entity: input_number.nastavena_teplota_bojlera
+
+controls:
+  - type: number
+    step: 0.5
+
+  - type: switch
+    entity: switch.sonoff_100142bd44
+```
+
 ---
 
-# Climate Select
+## Select
 
-Displays available HVAC modes.
-
-Supported modes are automatically read from the entity.
+The `select` control is currently used for climate HVAC modes.
 
 ```yaml
 controls:
   - type: select
 ```
 
-## Options
+The available modes are automatically read from the climate entity.
 
-| Option | Default | Description |
-|---------|---------|-------------|
-| `entity` | Main entity | Climate entity |
+Supported HVAC modes include:
 
-Example
+- `auto`
+- `cool`
+- `dry`
+- `fan_only`
+- `heat`
+- `off`
+
+Each mode is displayed using an icon.
+
+Example:
+
+```yaml
+entity: climate.living_room
+
+controls:
+  - type: number
+    step: 0.5
+
+  - type: switch
+
+  - type: select
+```
+
+The currently active mode is highlighted.
+
+---
+
+## Climate mode icons
+
+The following icons are currently used:
+
+| HVAC mode | Icon |
+|---|---|
+| `off` | `mdi:power` |
+| `heat` | `mdi:fire` |
+| `cool` | `mdi:snowflake` |
+| `dry` | `mdi:water-percent` |
+| `fan_only` | `mdi:fan` |
+| `auto` | `mdi:autorenew` |
+
+---
+
+## Select with another entity
+
+A different climate entity can be specified:
 
 ```yaml
 controls:
   - type: select
-    entity: climate.living_room
+    entity: climate.bedroom
 ```
 
-Supported modes include:
-
-- Auto
-- Heat
-- Cool
-- Dry
-- Fan Only
-- Off
+This allows the main card entity and the controlled climate entity to be different.
 
 ---
 
-# Multiple Controls
+## Multiple controls
 
-Controls can be combined.
+Multiple controls can be combined.
 
 ```yaml
 controls:
@@ -116,21 +164,86 @@ controls:
   - type: select
 ```
 
-Result:
-
-```
-- 22.5 +   ⏻
-❄ 🔥 💧 🌀 🔄
-```
+The controls are rendered in the order in which they are defined.
 
 ---
 
-# Future Controls
+## Complete climate example
 
-Planned controls:
+```yaml
+type: custom:dd-entity-card
 
-- Fan mode
-- Preset mode
-- Swing mode
-- Cover position
-- Slider
+entity: climate.living_room
+
+name:
+  value: Obývačka
+
+secondary:
+  rows:
+    - row:
+        - text: "Aktuálna: "
+        - attribute: current_temperature
+          decimals: 1
+          unit: true
+
+value:
+  decimals: 1
+  unit: true
+
+controls:
+  - type: number
+    step: 0.5
+
+  - type: switch
+
+  - type: select
+```
+
+This provides:
+
+- target temperature adjustment
+- power control
+- HVAC mode selection
+- current temperature display
+
+---
+
+## Boiler example
+
+```yaml
+type: custom:dd-entity-card
+
+entity: input_number.nastavena_teplota_bojlera
+
+name:
+  value: Bojler doma
+
+secondary:
+  rows:
+    - row:
+        - text: "Teplota: "
+        - entity: sensor.teplota_bojler
+          state: true
+          decimals: 1
+          unit: true
+
+controls:
+  - type: number
+    step: 0.5
+
+  - type: switch
+    entity: switch.sonoff_100142bd44
+```
+
+The number control changes the target temperature while the switch controls the boiler.
+
+---
+
+## Notes
+
+- Controls have their own click handling.
+- Clicking a control does not trigger the card `tap_action`.
+- `number` uses the entity's limits when available.
+- `step` can be used to define the temperature or number increment.
+- `switch` can control a different entity.
+- `select` reads the available HVAC modes directly from the climate entity.
